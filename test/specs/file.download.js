@@ -3,7 +3,8 @@ import { constants } from '../../constants.js';
 import fs from 'fs';
 
 const downloadsPath = global.downloadDir;
-const txtFileLinkSelector = '//a[contains(text(),"text.txt")]';
+const fileName = "some-file.txt";
+const txtFileLinkSelector = `//a[contains(text(),"${fileName}")]`;
 
 describe('File downloading test', () => {
     before('Clear the downloads content', async () => {
@@ -19,7 +20,7 @@ describe('File downloading test', () => {
         const fileLink = await $(txtFileLinkSelector);
         expect(fileLink).toBeExisting();
         await fileLink.click();
-        const filePath = `${downloadsPath}/text.txt`;
+        const filePath = `${downloadsPath}/${fileName}`;
         await browser.waitUntil(async () => fs.existsSync(filePath), {timeout: 5000});
         await expect(await fs.existsSync(filePath)).toEqual(true);
     })
